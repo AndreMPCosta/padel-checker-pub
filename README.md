@@ -32,6 +32,8 @@ Core Features:
 
 **[Typer](https://typer.tiangolo.com/)**
 
+**MailJet Account** to send emails to users.
+
 ## Installation
 
 ```shell
