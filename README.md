@@ -30,15 +30,29 @@ Core Features:
 
 **Docker Compose**: 1.29.2 and later
 
+**[Typer](https://typer.tiangolo.com/)**
+
 ## Installation
 
 ```shell
 git clone https://github.com/AndreMPCosta/padel-checker-pub.git
 ```
+
 After:
 ```shell
 cd padel-checker-pub
 ```
+
+Run:
+```shell
+pip install typer
+```
+
+Configure your env variables with:
+```shell
+python start.py
+```
+![img3.png](readme/img3.png)
 And finally:
 ```shell
 docker-compose up
