@@ -54,7 +54,6 @@ def build_mongo(user: str = Option(..., prompt='User'),
         f.write(f'MONGO_PASSWORD={password}\n')
         f.write(f'MONGO_HOST={host}\n')
         f.write(f'MONGO_DB={"padel"}\n')
-    echo(style("MongoDB Configuration", fg=colors.GREEN, bold=True))
 
 
 if __name__ == '__main__':
