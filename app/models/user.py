@@ -93,7 +93,7 @@ class UserModel(Model, ABC):
                 await temp_snap.save()
                 if new_slots and self.premium:
                     pprint(f'Sending email to {self.first_name} {self.last_name} - {datetime.now()}')
-                    # await send_email(self, f'Vagas disponíveis: {new_slots}')
+                    await send_email(self, f'Vagas disponíveis: {new_slots}')
                     pprint(new_slots)
                 else:
                     pprint(f'Checking watcher for {self.first_name} {self.last_name} at {datetime.now()}')
