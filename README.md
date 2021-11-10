@@ -53,6 +53,7 @@ Configure your env variables with:
 python start.py
 ```
 ![img3.png](readme/img3.png)
+
 And finally:
 ```shell
 docker-compose up
