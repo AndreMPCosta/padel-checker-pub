@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  web: &app
+    build: ./
+    command: pipenv run python -m app.main
+    env_file:
+      - 'environment/fastapi.env'
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    env_file:
+      - 'environment/rabbit.env'
+    volumes:
+      - ./config/rabbitmq/rabbit.conf:/etc/rabbit/rabbit.conf
+    ports:
+      # The rabbitMQ management plugin - running on http://localhost:15672
+      - "15672:15672"
+      - "5672:5672"
+  celery:
+    <<: *app
+    env_file:
+      - 'environment/celery.env'
+    ports: []
+    command: ['pipenv', 'run', 'celery', '-A', 'app.feed.celery_worker.celery', 'worker', '-l', 'INFO']
+    depends_on:
+      - rabbitmq
+      - web
+  flower:
+    <<: *app
+    env_file:
+      - 'environment/celery.env'
+    ports:
+      - "5555:5555"
+    depends_on:
+      - rabbitmq
+      - celery
+    command: ['pipenv', 'run', 'celery', 'flower']

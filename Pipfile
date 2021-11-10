@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "*"
+celery = "*"
+fastapi = "*"
+uvicorn = "*"
+flower = "*"
+gevent = "*"
+fastapi-utils = "*"
+odmantic = "*"
+setuptools = "*"
+motor = "*"
+click = "*"
+fastapi-login = "*"
+orjson = "*"
+python-multipart = "*"
+bcrypt = "*"
+pydantic = "*"
+mailjet-rest = "*"
+typer = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
