@@ -10,7 +10,7 @@ from app.feed.config import cities
 from app.feed.fetcher import Zone
 
 celery = Celery('tasks', broker=f'amqp://{environ.get("RABBITMQ_USER")}:{environ.get("RABBITMQ_PASSWORD")}'
-                                f'@127.0.0.1:5672', backend='rpc://')
+                                f'@localhost:5672', backend='rpc://')
 # Create logger - enable to display messages on task logger
 celery_log = get_task_logger(__name__)
 

@@ -1,6 +1,7 @@
 from abc import ABC
 
 from datetime import datetime
+from os import environ
 from pprint import pprint
 from typing import Optional, List
 
@@ -93,13 +94,15 @@ class UserModel(Model, ABC):
                 await temp_snap.save()
                 if new_slots and self.premium:
                     pprint(f'Sending email to {self.first_name} {self.last_name} - {datetime.now()}')
-                    await send_email(self, f'Vagas disponíveis: {new_slots}')
+                    if environ.get('MAILJET_API_KEY'):
+                        pass
+                    # await send_email(self, f'Vagas disponíveis: {new_slots}')
                     pprint(new_slots)
                 else:
                     pprint(f'Checking watcher for {self.first_name} {self.last_name} at {datetime.now()}')
             for snap in snapshots_to_remove:
                 self.snapshots.remove(snap)
-            self.snapshots = self.snapshots + snapshots_to_add
+            self.snapshots += snapshots_to_add
             await self.save()
         except Exception as e:
             print(e)

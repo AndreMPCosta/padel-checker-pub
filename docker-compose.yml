@@ -4,18 +4,31 @@ services:
   web: &app
     build: ./
     command: pipenv run python -m app.main
+    restart: always
     env_file:
-      - 'environment/fastapi.env'
+      - '${ENVIRONMENT_FOLDER}/fastapi.env'
+    volumes:
+      - ./app/feed/data:/home/padel/padel-checker/app/feed/data
     ports:
       - "8000:8000"
     depends_on:
       - rabbitmq
+      - mongodb
+  mongodb:
+    image: mongo:latest
+    restart: always
+    env_file:
+      - '${ENVIRONMENT_FOLDER}/fastapi.env'
+    volumes:
+#      - ./environment/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo-js:ro
+      - ./mongo-volume:/data/db
+    ports:
+      - "27017:27017"
   rabbitmq:
     image: rabbitmq:3.9-management
+    restart: always
     env_file:
-      - 'environment/rabbit.env'
-    volumes:
-      - ./config/rabbitmq/rabbit.conf:/etc/rabbit/rabbit.conf
+      - '${ENVIRONMENT_FOLDER}/rabbit.env'
     ports:
       # The rabbitMQ management plugin - running on http://localhost:15672
       - "15672:15672"
@@ -23,8 +36,9 @@ services:
   celery:
     <<: *app
     env_file:
-      - 'environment/celery.env'
+      - '${ENVIRONMENT_FOLDER}/celery.env'
     ports: []
+    restart: always
     command: ['pipenv', 'run', 'celery', '-A', 'app.feed.celery_worker.celery', 'worker', '-l', 'INFO']
     depends_on:
       - rabbitmq
@@ -32,9 +46,10 @@ services:
   flower:
     <<: *app
     env_file:
-      - 'environment/celery.env'
+      - '${ENVIRONMENT_FOLDER}/celery.env'
     ports:
       - "5555:5555"
+    restart: always
     depends_on:
       - rabbitmq
       - celery

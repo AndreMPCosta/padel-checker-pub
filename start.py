@@ -1,13 +1,19 @@
-from os import urandom
+from os import urandom, mkdir
+from os.path import exists, join
 from threading import Thread
 
 from typer import Option, style, colors, echo, Typer, run, Context
 
+from app.utils import get_project_root
+
 environ_folder = 'environment'
+
+if not exists(join(get_project_root(), environ_folder)):
+    mkdir(join(get_project_root(), environ_folder))
 
 
 def callback():
-    echo(style("RabbitMQ Configuration", fg=colors.GREEN, bold=True))
+    pass
 
 
 app = Typer(chain=True)
@@ -48,16 +54,33 @@ def build_mailjet(mailjet_api_key: str = Option(..., prompt='API KEY'),
 @app.command('mongo')
 def build_mongo(user: str = Option(..., prompt='User'),
                 password: str = Option(..., prompt='Password', hide_input=True),
-                host: str = Option(..., prompt='Host')):
+                host: str = Option(default='mongodb:27017', prompt='Host')):
     with open(f'{environ_folder}/fastapi.env', 'a') as f:
         f.write(f'MONGO_USER={user}\n')
+        f.write(f'MONGO_INITDB_ROOT_USERNAME={user}\n')
         f.write(f'MONGO_PASSWORD={password}\n')
+        f.write(f'MONGO_INITDB_ROOT_PASSWORD={password}\n')
         f.write(f'MONGO_HOST={host}\n')
-        f.write(f'MONGO_DB={"padel"}\n')
+        f.write(f'MONGO_DB=padel\n')
+        f.write(f'MONGO_INITDB_DATABASE=padel\n')
+    # with open(f'{environ_folder}/init-mongo.js', 'w') as f:
+    #     f.write(f'''db.createUser(
+    #         {{
+    #             user: {user},
+    #             pwd: {password},
+    #             roles: [
+    #                 {{
+    #                     role: 'readWrite',
+    #                     db: 'padel'
+    #                 }}
+    #             ]
+    #         }}
+    #     )''')
+    with open('docker.env', 'w') as f:
+        f.write('ENVIRONMENT_FOLDER=environment')
 
 
 if __name__ == '__main__':
-
     echo(style("RabbitMQ Configuration", fg=colors.GREEN, bold=True))
     x = Thread(target=run, args=(build_celery,))
     x.start()
@@ -72,4 +95,3 @@ if __name__ == '__main__':
     z = Thread(target=run, args=(build_mongo,))
     z.start()
     z.join()
-

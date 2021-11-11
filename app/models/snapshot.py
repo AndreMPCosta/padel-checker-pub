@@ -24,7 +24,9 @@ class Snapshot(Model, ABC):
 
     @root_validator
     def _init(cls, values):
-        if not values.get('clubs'):
+        dt = datetime.today()
+        if not values.get('clubs') and \
+                datetime.strptime(values.get('date'), '%Y-%m-%d') >= datetime(dt.year, dt.month, dt.day):
             zone = fetch_zone(values.get('date'), values.get('zone_id'))
             values['body'] = zone.filter_by(
                 values.get('start_time'),
