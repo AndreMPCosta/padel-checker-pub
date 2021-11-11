@@ -62,6 +62,14 @@ python start.py
 
 ---
 
+It is advised for you to create a new folder and use your own .env files, based on the sample_environment folder.
+
+For example, you can create a folder named **environment** and put the .env files there. After, just change the docker.env to point to that folder, ex:
+
+```
+ENVIRONMENT_FOLDER=environment
+```
+
 And finally:
 ```shell
 docker-compose --env-file docker.env up
