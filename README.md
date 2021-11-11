@@ -22,17 +22,17 @@ Core Features:
 
 ## Requirements
 
-**Python**: 3.6 and later (tested against 3.6, 3.7, 3.8 and 3.9)
-
-**MongoDB**: 4.0 and later (MongoDB is not containerized, but you can add it on the docker-compose.yml)
-
 **Docker**: 20.10 and later
 
 **Docker Compose**: 1.29.2 and later
 
-**[Typer](https://typer.tiangolo.com/)**
-
 **MailJet Account** to send emails to users.
+
+## Optional <h4>(to be able to use MailJet to send notifications by email, as customize MongoDB and RabbitMQ)</h4>
+
+**Python**: 3.6 and later (tested against 3.6, 3.7, 3.8 and 3.9)
+
+**[Typer](https://typer.tiangolo.com/)** (to run start script to customize everything)
 
 ## Installation
 
@@ -45,6 +45,10 @@ After:
 cd padel-checker-pub
 ```
 
+<h4 style="color: darkcyan"> Optional Step </h4>
+
+---
+
 Run:
 ```shell
 pip install typer
@@ -54,16 +58,18 @@ Configure your env variables with:
 ```shell
 python start.py
 ```
-![img3.png](readme/img3.png)
+![img3.png](readme/img2.png)
+
+---
 
 And finally:
 ```shell
-docker-compose up
+docker-compose --env-file docker.env up
 ```
 
 If everything went smoothly, you should have these following containers:
 
-![img2.png](readme/img2.png)
+![img2.png](readme/img3.png)
 
 ## Usage
 
