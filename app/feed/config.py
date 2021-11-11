@@ -17,6 +17,8 @@ cities = {
     'Viana do Castelo': 33,
 }
 
+all_ids = [12, 13, 14, 16, 22, 23, 24, 25, 26, 28, 29, 31, 32, 33]
+
 sport_id = 4
 page_size = 100000
 favorites = 0

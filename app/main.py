@@ -12,7 +12,7 @@ from app.models.user import UserModel
 from app.routers import zones, auth, user
 from app.utils import get_project_root
 
-app = FastAPI()
+app = FastAPI(title='Padel Checker')
 
 app.include_router(zones.router)
 app.include_router(auth.router)
